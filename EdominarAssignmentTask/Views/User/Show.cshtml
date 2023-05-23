@@ -1,0 +1,225 @@
+﻿@model IEnumerable<EdominarAssignmentTask.Models.UserInfo>
+
+@{
+    ViewData["Title"] = "All Users";
+}
+
+<p>
+    <a class="btn btn-primary" asp-action="Index">Register User</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Gender)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Address)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.State)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Hobby)
+            </th>     
+            <th>
+                @Html.DisplayNameFor(model => model.Mobile)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Address)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.State)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hobby)
+            </td>         
+            <td>
+                @Html.DisplayFor(modelItem => item.Mobile)
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary"  onclick= "Action('Edit', '@item.Id')" >Update</button> 
+                <button type="button" class="btn btn-success"  onclick= "Action('ViewData', '@item.Id')" >Details</button> 
+                <button type="button" class="btn btn-danger"   onclick= "Action('Delete',  '@item.Id')" >Delete</button>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
+
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+    
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+               
+                <h4 class="modal-title">Have a Good Day</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-4">
+                        Name:<b><p id="name"></p></b>
+                    </div>
+                    <div class="col-4">
+                        Address:<b><p id="address"></p></b>
+                    </div>
+                    <div class="col-4">
+                        Mobile Number:<b><p id="mobileNumber"></p></b>
+                    </div>
+                </div>
+                
+                
+                <div class="row">
+                    <div class="col-4">
+                        Gender:<b><p id="gender"></p></b>
+                    </div>
+                    <div class="col-4">
+                        Hobby:<b><p id="hobby"></p></b>
+                    </div>
+                    <div class="col-4">
+                        State:<b><p id="state"></p></b>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-4">
+                       
+                    </div>
+                    <div class="col-4">
+                        Email:<b><p id="email"></p></b>
+                    </div>
+                    
+                </div>
+
+            </div>
+            
+            <div class="modal-footer">
+               
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseModal()">Close</button>
+            </div>
+        </div>
+   </div>
+</div>
+
+<div class="modal fade" id="myModal1" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h4 class="modal-title">View Data</h4>
+            </div>
+            <div class="modal-body">
+
+                <h6>Confirm To Delete</h6>
+                <input type="hidden" id="id" />
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="CloseModal()">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="ConfirmDeleteModal()">Confirm</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.7.0.js" integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+
+<script>
+
+    function Action(status, id) {
+        debugger;
+        if (status == "Edit") {
+            window.location.href = "@Url.Action("Update", "User")?id="
+                + id;
+        }
+        if (status == "Delete") {
+            $("#myModal1").modal("show");
+            $("#id").val(id);
+
+        }
+        if (status == "ViewData") {
+            $("#myModal").modal("show");
+            LoadData(id);
+
+        }
+    }
+    function LoadData(id) {
+
+        debugger;
+        var datas = {
+            id: id
+        };
+        $.ajax({
+            url: "/User/ShowById",
+            type: "Get",
+            data: datas,
+            success: function (result) {
+                debugger
+                
+                $('#name').text(result.name);
+                $('#address').text(result.address);
+                $('#mobileNumber').text(result.mobile);
+                $('#gender').text(result.gender);
+                $('#hobby').text(result.hobby);
+                $('#state').text(result.state);
+                $('#email').text(result.email);
+            },
+            error: function (errormessage) {
+                debugger;
+            }
+        });
+    }
+
+    function ConfirmDeleteModal() {
+        debugger;
+        var id = $("#id").val();
+        var datas = {
+            id: id
+        };
+        $.ajax({
+            url: "/User/Delete",
+            type: "POST",
+            data: datas,
+            success: function (result) {
+
+                $("#myModal1").modal("hide");
+            },
+            error: function (errormessage) {
+                debugger;
+            }
+        });
+    }
+    function CloseModal() {
+        $("#myModal").modal("hide");
+        $('#myModal1').modal('hide');
+    }
+</script>
