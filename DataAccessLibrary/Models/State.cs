@@ -9,7 +9,6 @@ namespace DataAccessLibrary.Models
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-
         [Required]
         public string Name { get; set; } = String.Empty;
     }

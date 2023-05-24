@@ -3,7 +3,6 @@
 @{
     ViewData["Title"] = "All Users";
 }
-
 <p>
     <a class="btn btn-primary" asp-action="Index">Register User</a>
 </p>
@@ -210,8 +209,8 @@
             type: "POST",
             data: datas,
             success: function (result) {
-
                 $("#myModal1").modal("hide");
+                window.location.href = "@Url.Action("Show", "User")";
             },
             error: function (errormessage) {
                 debugger;

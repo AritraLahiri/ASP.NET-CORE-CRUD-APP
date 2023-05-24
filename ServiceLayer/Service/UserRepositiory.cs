@@ -82,8 +82,6 @@ namespace ServiceLayer.Service
                         State = stateList.Name ?? "Empty",
                         Gender = user.Gender
                     });
-
-
                 }
                 return data;
             }
@@ -106,12 +104,10 @@ namespace ServiceLayer.Service
                 Debug.WriteLine(e.Message);
             }
         }
-
         public async Task<UserInfo> GetUserById(int Id)
         {
-            User? user = new User();
+            User? user = new();
             UserInfo data = new();
-
             try
             {
                 user = await _dbContext.User.Where(x => x.Id == Id).FirstOrDefaultAsync();
@@ -142,7 +138,6 @@ namespace ServiceLayer.Service
             }
             return data;
         }
-
         public async Task DeleteUser(int Id)
         {
             try
@@ -160,7 +155,6 @@ namespace ServiceLayer.Service
                 Debug.WriteLine(e.Message);
             }
         }
-
         public async Task UpdateUser(User user)
         {
             try
@@ -188,8 +182,6 @@ namespace ServiceLayer.Service
 
                 Debug.WriteLine(e.Message);
             }
-
-
         }
 
     }

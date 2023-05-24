@@ -18,6 +18,7 @@ namespace DataAccessLibrary.Models
         public string Address { get; set; } = String.Empty;
         [Required]
         [DataType(DataType.PhoneNumber)]
+        [StringLength(10, MinimumLength = 10, ErrorMessage = "Please enter a 10 digit Mobile Number")]
         public string Mobile { get; set; } = String.Empty;
         [Display(Name = "State")]
         [Required]
@@ -29,7 +30,7 @@ namespace DataAccessLibrary.Models
         public int HobbyId { get; set; }
         [ForeignKey(nameof(HobbyId))]
         public Hobby? Hobbies { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Please Select your Gender")]
         public string Gender { get; set; } = String.Empty;
 
     }
